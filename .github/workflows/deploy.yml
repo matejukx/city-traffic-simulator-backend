@@ -40,4 +40,4 @@ jobs:
           script: |
             docker stop $(docker ps -q --filter ancestor=matejuk/city-traffic-simulator-backend )
             docker pull matejuk/city-traffic-simulator-backend
-            docker run -d -p 3001:3001 matejuk/city-traffic-simulator-backend
+            docker run -d -p 3001:80 matejuk/city-traffic-simulator-backend
