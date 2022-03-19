@@ -1,32 +1,21 @@
-using Microsoft.AspNetCore.Mvc;
-
 namespace city_traffic_simulator_backend.Controllers;
+
+using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/hello")]
-public class WeatherForecastController : ControllerBase
+public class HelloController : ControllerBase
 {
-    private static readonly string[] Summaries = new[]
-    {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+    private readonly ILogger<HelloController> _logger;
 
-    private readonly ILogger<WeatherForecastController> _logger;
-
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    public HelloController(ILogger<HelloController> logger)
     {
         _logger = logger;
     }
 
-    [HttpGet(Name = "GetWeatherForecast")]
-    public IEnumerable<WeatherForecast> Get()
+    [HttpGet(Name = "GetHello")]
+    public ObjectResult Get()
     {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+        return this.Ok("hello");
     }
 }
