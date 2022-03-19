@@ -24,11 +24,11 @@ jobs:
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
+        working-directory: ./city-traffic-simulator-backend
         with:
           push: true
           tags: matejuk/city-traffic-simulator-backend:latest
           context: ./city-traffic-simulator-backend
-          file: city-traffic-simulator-backend/Dockerfile
   update-VPS-container:
     needs: build-and-push
     runs-on: ubuntu-latest
