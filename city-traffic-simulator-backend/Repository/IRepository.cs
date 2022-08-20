@@ -11,7 +11,9 @@ public interface IRepository<T>
 
     Task InsertAsync(T obj);
 
-    Task<T> UpdateAsync(T obj);
+    Task UpsertAsync(T obj);
+
+    Task UpdateAsync(T obj);
 
     Task DeleteAsync(Expression<Func<T, bool>> predicate);
 }
