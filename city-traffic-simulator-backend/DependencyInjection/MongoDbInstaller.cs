@@ -1,9 +1,3 @@
-//  --------------------------------------------------------------------------------------------------------------------
-//  <copyright file="MongoDbInstaller.cs" company="automotiveMastermind">
-//    © automotiveMastermind. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
 namespace city_traffic_simulator_backend.DependencyInjection;
 
 using Entities;
