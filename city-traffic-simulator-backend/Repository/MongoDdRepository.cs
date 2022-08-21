@@ -12,6 +12,11 @@ public abstract class MongoDdRepository<T> : IRepository<T>
         return collection.AsQueryable();
     }
 
+    public virtual IEnumerable<T> ListAll()
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<T> GetOneAsync(Expression<Func<T, bool>> predicate)
     {
         var filter = Builders<T>.Filter.Where(predicate);

@@ -11,6 +11,17 @@ public class SimulationDataRepository : MongoDdRepository<SimulationDataDocument
         SetupIndex();
     }
 
+    public override IEnumerable<SimulationDataDocument> ListAll()
+    {
+        var projection =
+            Builders<SimulationDataDocument>.Projection.Expression(p => new SimulationDataDocument{
+                Id = p.Id,
+                MapHash = p.MapHash,
+                SettingsHash = p.SettingsHash
+            });
+        return collection.Find(_ => true).Project(projection).ToEnumerable();
+    }
+
     public override async Task UpsertAsync(SimulationDataDocument obj)
     {
         var existing = await this.GetOneAsync(d =>

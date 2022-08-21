@@ -38,6 +38,22 @@ public class SimulationDataController : ControllerBase
         }
        
     }
+    
+    [HttpGet]
+    [Route("list")]
+    public ObjectResult ListAll()
+    {
+        try
+        {
+            var result = _repository.ListAll();
+            return result.Any() ? Ok(result) : this.StatusCode(404, "No simulation data found");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error while getting simulation data: {ex.Message}");
+            return this.StatusCode(500, "Error while getting simulation data");
+        }
+    }
 
     [HttpPost]
     [ProducesResponseType(typeof(AcceptedResult), StatusCodes.Status202Accepted)]
