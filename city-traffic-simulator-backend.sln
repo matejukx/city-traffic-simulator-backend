@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "city-traffic-simulator-backend", "city-traffic-simulator-backend\city-traffic-simulator-backend.csproj", "{3DA888C6-B223-430A-9FE7-93D0571741E7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cts-test", "cts-test\cts-test.csproj", "{B350FBFF-F3DF-40FE-81FF-8454DFA5FB3D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{3DA888C6-B223-430A-9FE7-93D0571741E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DA888C6-B223-430A-9FE7-93D0571741E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DA888C6-B223-430A-9FE7-93D0571741E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B350FBFF-F3DF-40FE-81FF-8454DFA5FB3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B350FBFF-F3DF-40FE-81FF-8454DFA5FB3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B350FBFF-F3DF-40FE-81FF-8454DFA5FB3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B350FBFF-F3DF-40FE-81FF-8454DFA5FB3D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
