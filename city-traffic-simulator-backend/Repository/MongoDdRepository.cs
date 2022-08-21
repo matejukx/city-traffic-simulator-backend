@@ -38,8 +38,8 @@ public abstract class MongoDdRepository<T> : IRepository<T>
         throw new NotImplementedException();
     }
 
-    public async Task DeleteAsync(Expression<Func<T, bool>> predicate)
+    public async Task<DeleteResult> DeleteAsync(Expression<Func<T, bool>> predicate)
     {
-        await collection.DeleteOneAsync(predicate);
+        return await collection.DeleteOneAsync(predicate);
     }
 }

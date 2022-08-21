@@ -38,9 +38,34 @@ public class SimulationDataController : ControllerBase
         }
        
     }
+
+    [HttpDelete]
+    [ProducesResponseType(typeof(AcceptedResult), StatusCodes.Status202Accepted)]
+    [ProducesResponseType(typeof(StatusCodeResult), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ObjectResult> Delete([FromQuery] SimulationDataQuery query)
+    {
+        try
+        {
+           var result = await _repository.DeleteAsync(d =>
+                d.MapHash == query.MapHash && d.SettingsHash == query.SettingsHash);
+           if (result.IsAcknowledged)
+           {
+               return result.DeletedCount > 0 ? this.Accepted() : this.StatusCode(404, "Simulation data not found");
+           }
+           return this.StatusCode(505, "Error while deleting simulation data");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error while deleting simulation data: {ex.Message}");
+            return this.StatusCode(500, "Error while deleting simulation data");
+        }
+    }
     
     [HttpGet]
     [Route("list")]
+    [ProducesResponseType(typeof(OkObjectResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ObjectResult ListAll()
     {
         try

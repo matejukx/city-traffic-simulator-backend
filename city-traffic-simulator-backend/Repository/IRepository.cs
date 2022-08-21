@@ -1,6 +1,7 @@
 namespace city_traffic_simulator_backend.Repository;
 
 using System.Linq.Expressions;
+using MongoDB.Driver;
 
 public interface IRepository<T>
 {
@@ -16,5 +17,5 @@ public interface IRepository<T>
 
     Task UpdateAsync(T obj);
 
-    Task DeleteAsync(Expression<Func<T, bool>> predicate);
+    Task<DeleteResult> DeleteAsync(Expression<Func<T, bool>> predicate);
 }
