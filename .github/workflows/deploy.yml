@@ -40,4 +40,4 @@ jobs:
           script: |
             docker stop $(docker ps -q --filter ancestor=matejuk/city-traffic-simulator-backend )
             docker pull matejuk/city-traffic-simulator-backend
-            docker run --env MONGOCONNECTION__CONNECTIONSTRING="${{ secrets.MONGODB_CONNECTIONSTRING }}" --env MONGOCONNECTION__DATABASENAME=${{ secrets.MONGODB_DATABASENAME }} -d -p 3001:80 matejuk/city-traffic-simulator-backend 
+            docker run --env MONGOCONNECTION__CONNECTIONSTRING="${{ secrets.MONGODB_CONNECTIONSTRING }}" --env MONGOCONNECTION__DATABASENAME=${{ secrets.MONGODB_DATABASENAME }} --env APIKEY=${{ API_KEY }} -d -p 3001:80 matejuk/city-traffic-simulator-backend 

@@ -1,4 +1,5 @@
 using city_traffic_simulator_backend;
+using city_traffic_simulator_backend.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,5 +16,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseMiddleware<ApiKeyMiddleware>();
 
 app.Run();
