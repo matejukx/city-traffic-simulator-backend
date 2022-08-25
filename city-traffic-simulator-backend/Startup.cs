@@ -23,7 +23,7 @@ public class Startup
                 Name = "ApiKey",
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.ApiKey,
-                Description = "Authorization by x-api-key inside request's header",
+                Description = "Authorization by x-api-key inside request's header.",
                 Scheme = "ApiKeyScheme"
             });
 
