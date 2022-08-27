@@ -1,22 +1,21 @@
 namespace city_traffic_simulator_backend.Controllers;
 
-using System.Text.Json;
+using Entities;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using Repository;
 
 [Route("test")]
 public class TestController : ControllerBase
 {
-    private readonly IMongoCollection<BsonDocument> _collection;
+    private readonly IMongoCollection<TestSimulationDataDocument> _collection;
     private readonly ILogger<TestController> _logger;
 
     public TestController(MongoContext context, ILogger<TestController> logger)
     {
         _logger = logger;
-        _collection = context.Database.GetCollection<BsonDocument>("testData");
+        _collection = context.Database.GetCollection<TestSimulationDataDocument>("testSimulationData");
     }
     
     [HttpGet]
@@ -25,7 +24,7 @@ public class TestController : ControllerBase
     {
         try
         {
-            var document = _collection.Find(doc => doc["_id"] == new ObjectId(id)).First().ToJson();
+            var document = _collection.Find(doc => doc.Id == new Guid(id)).First().ToJson();
             return this.Ok(document);
         }
         catch (Exception ex)
@@ -39,16 +38,13 @@ public class TestController : ControllerBase
     [HttpPost]
     [ProducesResponseType(typeof(CreatedAtActionResult), StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ObjectResult> SaveTestData([FromBody] JsonElement content)
+    public async Task<ObjectResult> SaveTestData([FromBody] TestSimulationDataDocument document)
     {
         try
         {
-            var json = content.GetRawText();
-            var document = BsonSerializer.Deserialize<BsonDocument>(json);
-
             await _collection.InsertOneAsync(document);
             return CreatedAtAction(nameof(SaveTestData),
-                new { id = document["_id"].ToString()});
+                new { id = document.Id.ToString()});
         }
         catch (Exception ex)
         {
