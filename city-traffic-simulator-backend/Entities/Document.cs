@@ -9,5 +9,5 @@ public class Document
     [BsonElement("_id")]
     [BsonRepresentation(BsonType.String)]
     [BsonId(IdGenerator = typeof(GuidGenerator))]
-    public Guid Id { get; set; }
+    public Guid? Id { get; set; }
 }

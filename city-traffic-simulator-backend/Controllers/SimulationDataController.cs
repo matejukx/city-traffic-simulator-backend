@@ -1,8 +1,6 @@
 namespace city_traffic_simulator_backend.Controllers;
 
-using AutoMapper;
 using Entities;
-using Entities.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Queries;
 using Repository;
@@ -12,14 +10,12 @@ using Repository;
 public class SimulationDataController : ControllerBase
 {
     private readonly IRepository<SimulationDataDocument> _repository;
-    private readonly IMapper _mapper;
     private readonly ILogger<SimulationDataController> _logger;
 
-    public SimulationDataController(IRepository<SimulationDataDocument> repository, ILogger<SimulationDataController> logger, IMapper mapper)
+    public SimulationDataController(IRepository<SimulationDataDocument> repository, ILogger<SimulationDataController> logger)
     {
         _repository = repository;
         _logger = logger;
-        _mapper = mapper;
     }
     
     [HttpGet]
@@ -83,9 +79,8 @@ public class SimulationDataController : ControllerBase
     [HttpPost]
     [ProducesResponseType(typeof(AcceptedResult), StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ObjectResult> SaveSimulationData([FromBody] SimulationChunk chunk)
+    public async Task<ObjectResult> SaveSimulationData([FromBody] SimulationDataDocument document)
     {
-        var document = _mapper.Map<SimulationDataDocument>(chunk);
         try
         {
             await _repository.UpsertAsync(document);
