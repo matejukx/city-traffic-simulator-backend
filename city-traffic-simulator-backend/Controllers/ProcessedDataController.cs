@@ -39,6 +39,31 @@ public class ProcessedDataController : ControllerBase
         return new ObjectResult(this.NotFound());
     }
     
+    [HttpGet]
+    [Route("list")]
+    [ProducesResponseType(typeof(ObjectResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ObjectResult> GetAllProcessedData()
+    {
+        try
+        {
+            var documents = await _collection.FindAsync(_ => true);
+            var results = documents.ToEnumerable().Select(doc => new
+            {
+                Id = doc["_id"].ToString(),
+                SettingsHash = doc["settings_hash"].ToString()?? null,
+                MapHash = doc["map_hash"].ToString()?? null
+            }).ToList();
+            return this.Ok(results);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error while getting processed simulation data {ex.Message}");
+        }
+
+        return new ObjectResult(this.NotFound());
+    }
+    
     [HttpPost]
     [ProducesResponseType(typeof(CreatedAtActionResult), StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
