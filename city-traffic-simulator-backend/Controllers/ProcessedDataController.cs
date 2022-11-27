@@ -60,9 +60,8 @@ public class ProcessedDataController : ControllerBase
                 Id = doc["_id"].ToString(),
                 SettingsHash = doc["SettingsHash"].ToString(),
                 MapHash = doc["MapHash"].ToString(),
-                RunId = doc["RunId"].ToString(),
-                ChartType = doc["ChartType"].ToString()
-            }).ToList();
+                RunId = doc["RunId"].ToString()
+            }).Distinct().ToList();
             return Ok(results);
         }
         catch (Exception ex)
