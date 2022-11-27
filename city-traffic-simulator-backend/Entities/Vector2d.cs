@@ -5,8 +5,8 @@ using System.Text.Json.Serialization;
 public class Vector2d
 {
     [JsonPropertyName("x")]
-    public float X { get; set; }
+    public double X { get; set; }
     
     [JsonPropertyName("y")]
-    public float Y { get; set; }
+    public double Y { get; set; }
 }

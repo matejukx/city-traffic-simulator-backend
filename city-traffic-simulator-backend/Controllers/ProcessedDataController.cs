@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
+using Queries;
 using Repository;
 
 [ApiController]
@@ -21,22 +22,28 @@ public class ProcessedDataController : ControllerBase
     }
 
     [HttpGet]
-    [Route("{id}")]
+    [Route("find")]
     [ProducesResponseType(typeof(ObjectResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ObjectResult> GetProcessedData([FromRoute] string id)
+    public async Task<ObjectResult> GetProcessedData([FromQuery] ProcessedDataQuery processedDataQuery)
     {
         try
         {
-            var document = _collection.Find(doc => doc["_id"] == new ObjectId(id)).First().ToJson();
-            return this.Ok(document);
+            var document = _collection
+                .Find(doc =>
+                    doc["MapHash"] == processedDataQuery.MapHash
+                    && doc["SettingsHash"] == processedDataQuery.SettingsHash
+                    && doc["RunId"] == processedDataQuery.RunId
+                    && doc["ChartType"] == processedDataQuery.ChartType)
+                .First().ToJson();
+            return Ok(document);
         }
         catch (Exception ex)
         {
             _logger.LogError($"Error while getting processed simulation data {ex.Message}");
         }
 
-        return new ObjectResult(this.NotFound());
+        return new ObjectResult(NotFound());
     }
     
     [HttpGet]
@@ -51,17 +58,18 @@ public class ProcessedDataController : ControllerBase
             var results = documents.ToEnumerable().Select(doc => new
             {
                 Id = doc["_id"].ToString(),
-                SettingsHash = doc["settings_hash"].ToString()?? null,
-                MapHash = doc["map_hash"].ToString()?? null
+                SettingsHash = doc["settings_hash"].ToString(),
+                MapHash = doc["map_hash"].ToString(),
+                RunId = doc["run_id"].ToString(),
             }).ToList();
-            return this.Ok(results);
+            return Ok(results);
         }
         catch (Exception ex)
         {
             _logger.LogError($"Error while getting processed simulation data {ex.Message}");
         }
 
-        return new ObjectResult(this.NotFound());
+        return new ObjectResult(NotFound());
     }
     
     [HttpPost]
@@ -81,7 +89,7 @@ public class ProcessedDataController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError($"Error while saving processed simulation data {ex.Message}");
-            return this.StatusCode(500, "Error while saving simulation data");
+            return StatusCode(500, "Error while saving simulation data");
         }
     }
 }

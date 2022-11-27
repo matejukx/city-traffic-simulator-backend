@@ -24,13 +24,13 @@ public class SimulationDataController : ControllerBase
         try
         {
             var result = await _repository.GetOneAsync(d =>
-                d.MapHash == query.MapHash && d.SettingsHash == query.SettingsHash);
+                d.MapHash == query.MapHash && d.SettingsHash == query.SettingsHash && d.RunId == query.RunId);
             return Ok(result);
         }
         catch (Exception ex)
         {
             _logger.LogError($"Error while getting simulation data: {ex.Message}");
-            return this.StatusCode(500, "Error while getting simulation data");
+            return StatusCode(500, $"Error while getting simulation data: {ex.Message}");
         }
        
     }
@@ -44,17 +44,17 @@ public class SimulationDataController : ControllerBase
         try
         {
            var result = await _repository.DeleteAsync(d =>
-                d.MapHash == query.MapHash && d.SettingsHash == query.SettingsHash);
+                d.MapHash == query.MapHash && d.SettingsHash == query.SettingsHash && d.RunId == query.RunId);
            if (result.IsAcknowledged)
            {
-               return result.DeletedCount > 0 ? this.Accepted() : this.StatusCode(404, "Simulation data not found");
+               return result.DeletedCount > 0 ? Accepted() : StatusCode(404, "Simulation data not found");
            }
-           return this.StatusCode(505, "Error while deleting simulation data");
+           return StatusCode(505, "Error while deleting simulation data");
         }
         catch (Exception ex)
         {
             _logger.LogError($"Error while deleting simulation data: {ex.Message}");
-            return this.StatusCode(500, "Error while deleting simulation data");
+            return StatusCode(500, "Error while deleting simulation data");
         }
     }
     
@@ -72,7 +72,7 @@ public class SimulationDataController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError($"Error while getting simulation data: {ex.Message}");
-            return this.StatusCode(500, "Error while getting simulation data");
+            return StatusCode(500, "Error while getting simulation data");
         }
     }
 
@@ -84,12 +84,12 @@ public class SimulationDataController : ControllerBase
         try
         {
             await _repository.UpsertAsync(document);
-            return this.Accepted();
+            return Accepted();
         }
         catch (Exception ex)
         {
             _logger.LogError($"Error while saving simulation data: {ex.Message}");
-            return this.StatusCode(500, "Error while saving simulation data");
+            return StatusCode(500, "Error while saving simulation data");
         }
     }
 }

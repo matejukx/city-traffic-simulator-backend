@@ -8,5 +8,7 @@ public class SimulationDataDocument : Document
     
     public string MapHash { get; set; }
     
+    public int RunId { get; set; }
+    
     public Frame[] Frames { get; set; }
 }
