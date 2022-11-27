@@ -58,9 +58,10 @@ public class ProcessedDataController : ControllerBase
             var results = documents.ToEnumerable().Select(doc => new
             {
                 Id = doc["_id"].ToString(),
-                SettingsHash = doc["settings_hash"].ToString(),
-                MapHash = doc["map_hash"].ToString(),
-                RunId = doc["run_id"].ToString(),
+                SettingsHash = doc["SettingsHash"].ToString(),
+                MapHash = doc["MapHash"].ToString(),
+                RunId = doc["RunId"].ToString(),
+                ChartType = doc["ChartType"].ToString()
             }).ToList();
             return Ok(results);
         }
