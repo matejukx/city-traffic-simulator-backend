@@ -37,6 +37,7 @@ public class ProcessedDataController : ControllerBase
             var document = documents.FirstOrDefault();
             var jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict };
             var json = document.ToJson(jsonWriterSettings);
+            json = json.Replace("\\", "");
             return Ok(json);
         }
         catch (Exception ex)
