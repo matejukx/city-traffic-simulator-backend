@@ -17,7 +17,8 @@ public class SimulationDataRepository : MongoDdRepository<SimulationDataDocument
             Builders<SimulationDataDocument>.Projection.Expression(p => new SimulationDataDocument{
                 Id = p.Id,
                 MapHash = p.MapHash,
-                SettingsHash = p.SettingsHash
+                SettingsHash = p.SettingsHash,
+                RunId = p.RunId
             });
         return collection.Find(_ => true).Project(projection).ToEnumerable();
     }

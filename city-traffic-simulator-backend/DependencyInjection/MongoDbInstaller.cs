@@ -11,5 +11,6 @@ public static class MongoDbInstaller
             configuration.GetSection("MongoConnection"));
         services.AddScoped<MongoContext>();
         services.AddScoped<IRepository<SimulationDataDocument>,SimulationDataRepository>();
+        services.AddScoped<IRepository<Settings>, SettingsRepository>();
     }
 }

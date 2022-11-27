@@ -67,7 +67,7 @@ public class SimulationDataController : ControllerBase
         try
         {
             var result = _repository.ListAll();
-            return result.Any() ? Ok(result) : this.StatusCode(404, "No simulation data found");
+            return result.Any() ? Ok(result) : StatusCode(404, "No simulation data found");
         }
         catch (Exception ex)
         {
