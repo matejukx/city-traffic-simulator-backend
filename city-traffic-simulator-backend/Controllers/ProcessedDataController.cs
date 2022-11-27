@@ -57,7 +57,6 @@ public class ProcessedDataController : ControllerBase
             var documents = await _collection.FindAsync(_ => true);
             var results = documents.ToEnumerable().Select(doc => new
             {
-                Id = doc["_id"].ToString(),
                 SettingsHash = doc["SettingsHash"].ToString(),
                 MapHash = doc["MapHash"].ToString(),
                 RunId = doc["RunId"].ToString()
