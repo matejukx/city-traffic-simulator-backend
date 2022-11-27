@@ -92,4 +92,31 @@ public class ProcessedDataController : ControllerBase
             return StatusCode(500, $"Error while saving simulation data {ex.Message}");
         }
     }
+    
+    // delete processed data by hashes
+    [HttpDelete]
+    [Route("delete")]
+    [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ObjectResult> DeleteProcessedData([FromQuery] ProcessedDataQuery processedDataQuery)
+    {
+        try
+        {
+            var documents = await _collection.FindAsync(doc =>
+                doc["MapHash"] == processedDataQuery.MapHash
+                && doc["SettingsHash"] == processedDataQuery.SettingsHash
+                && doc["RunId"] == processedDataQuery.RunId);
+            var document = documents.FirstOrDefault();
+            if (document != null)
+            {
+                await _collection.DeleteOneAsync(doc => doc["_id"] == document["_id"]);
+            }
+            return Accepted();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error while deleting processed simulation data {ex.Message}");
+            return StatusCode(500, $"Error while deleting simulation data {ex.Message}");
+        }
+    }
 }
