@@ -3,6 +3,7 @@ namespace city_traffic_simulator_backend.Controllers;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
+using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using Queries;
@@ -29,14 +30,14 @@ public class ProcessedDataController : ControllerBase
     {
         try
         {
-            var document = _collection
-                .Find(doc =>
-                    doc["MapHash"] == processedDataQuery.MapHash
-                    && doc["SettingsHash"] == processedDataQuery.SettingsHash
-                    && doc["RunId"] == processedDataQuery.RunId
-                    && doc["ChartType"] == processedDataQuery.ChartType)
-                .First().ToJson();
-            return Ok(document);
+            var documents = await _collection.FindAsync(doc =>
+                doc["MapHash"] == processedDataQuery.MapHash
+                && doc["SettingsHash"] == processedDataQuery.SettingsHash
+                && doc["RunId"] == processedDataQuery.RunId);
+            var document = documents.FirstOrDefault();
+            var jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict };
+            var json = document.ToJson(jsonWriterSettings);
+            return Ok(json);
         }
         catch (Exception ex)
         {
@@ -80,7 +81,6 @@ public class ProcessedDataController : ControllerBase
         {
             var json = content.GetRawText();
             var document = BsonSerializer.Deserialize<BsonDocument>(json);
-
             await _collection.InsertOneAsync(document);
             return CreatedAtAction(nameof(SaveProcessedData),
                 new { id = document["_id"].ToString()});
@@ -88,7 +88,7 @@ public class ProcessedDataController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError($"Error while saving processed simulation data {ex.Message}");
-            return StatusCode(500, "Error while saving simulation data");
+            return StatusCode(500, $"Error while saving simulation data {ex.Message}");
         }
     }
 }
