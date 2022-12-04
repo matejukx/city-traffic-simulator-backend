@@ -14,7 +14,5 @@ public class MongoContext
         Database = _client.GetDatabase(settings.DatabaseName);
     }
 
-    public IMongoClient Client => _client;
-
     public IMongoDatabase Database { get; }
 }

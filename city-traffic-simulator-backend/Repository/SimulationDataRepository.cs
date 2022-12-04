@@ -7,7 +7,7 @@ public class SimulationDataRepository : MongoDdRepository<SimulationDataDocument
 {
     public SimulationDataRepository(MongoContext context)
     {
-        this.collection = context.Database.GetCollection<SimulationDataDocument>(nameof(SimulationDataDocument));  
+        collection = context.Database.GetCollection<SimulationDataDocument>(nameof(SimulationDataDocument));  
         SetupIndex();
     }
 
@@ -25,7 +25,7 @@ public class SimulationDataRepository : MongoDdRepository<SimulationDataDocument
 
     public override async Task UpsertAsync(SimulationDataDocument obj)
     {
-        var existing = await this.GetOneAsync(d =>
+        var existing = await GetOneAsync(d =>
             d.MapHash == obj.MapHash && d.SettingsHash == obj.SettingsHash);
        if (existing is null)
        {

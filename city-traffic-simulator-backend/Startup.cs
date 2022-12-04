@@ -43,7 +43,7 @@ public class Startup
             c.AddSecurityRequirement(requirement);
         });
         services.AddAutoMapper(config => config.AddProfile(typeof(SimulationMapperProfile)));
-        services.SetupMongo(this.Configuration);
+        services.SetupMongo(Configuration);
     }
 
     public void Configure(IApplicationBuilder app, IHostApplicationLifetime lifetime)
