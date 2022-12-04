@@ -7,6 +7,9 @@ public class Car
     [JsonPropertyName("id")]
     public int Id { get; set; }
     
+    [JsonPropertyName("tags")]
+    public List<string> Tags { get; set; }
+
     [JsonPropertyName("state")]
     public string? State { get; set; }
     
