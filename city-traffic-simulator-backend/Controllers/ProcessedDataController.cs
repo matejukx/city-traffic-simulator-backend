@@ -61,6 +61,7 @@ public class ProcessedDataController : ControllerBase
             {
                 SettingsHash = doc["SettingsHash"].ToString(),
                 MapHash = doc["MapHash"].ToString(),
+                ChartType = doc["ChartType"].ToString(),
                 RunId = doc["RunId"].ToString()
             }).Distinct().ToList();
             return Ok(results);
