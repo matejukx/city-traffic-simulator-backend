@@ -13,5 +13,6 @@ public static class MongoDbInstaller
         services.AddScoped<IRepository<SimulationDataDocument>,SimulationDataRepository>();
         services.AddScoped<IRepository<Settings>, SettingsRepository>();
         services.AddScoped<IRepository<TagDocument>, TagsRepository>();
+        services.AddScoped<IRepository<Map>, MapRepository>();
     }
 }
