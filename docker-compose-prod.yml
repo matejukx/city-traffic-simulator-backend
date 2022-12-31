@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  cts-backend:
+    image: matejuk/city-traffic-simulator-backend:latest
+    container_name: cts-backend
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      - MONGOCONNECTION__CONNECTIONSTRING=mongodb://j140:PASSWORD@mongodb.mikr.dev:27017/?authSource=db_j140&readPreference=primary&ssl=false
+      - MONGOCONNECTION__DATABASENAME=db_j140
+      - APIKEY=1234
+    networks:
+      - ctsNetworkPrd
+
+  cts-frontend:
+    image: hevgan/cts-dash-application:latest
+    container_name: cts-frontend
+    restart: always
+    ports:
+      - 8081:8095
+    environment:
+      - BACKEND_API_KEY=1234
+      - BACKEND_API_URL=http://cts-backend
+    networks:
+      - ctsNetworkPrd
+  
+
+networks:
+  ctsNetworkPrd:

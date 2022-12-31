@@ -1,0 +1,44 @@
+version: '3.9'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+      - MONGO_INITDB_DATABASE=test
+    networks:
+      - ctsNetwork
+
+  cts-backend:
+    image: matejuk/city-traffic-simulator-backend:latest
+    container_name: cts-backend
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      - MONGOCONNECTION__CONNECTIONSTRING=mongodb://root:root@mongodb:27017
+      - MONGOCONNECTION__DATABASENAME=test
+      - APIKEY=1234
+    networks:
+      - ctsNetwork
+
+  cts-frontend:
+    image: hevgan/cts-dash-application:latest
+    container_name: cts-frontend
+    restart: always
+    ports:
+      - 8081:8095
+    environment:
+      - BACKEND_API_KEY=1234
+      - BACKEND_API_URL=http://cts-backend
+    networks:
+      - ctsNetwork
+  
+
+networks:
+  ctsNetwork:
