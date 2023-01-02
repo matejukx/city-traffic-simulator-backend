@@ -14,6 +14,19 @@ services:
     networks:
       - ctsNetworkPrd
 
+  cts-compute-service:
+    image: brzzw5k/city-traffic-simulator-computing-microservice:latest
+    container_name: cts-compute-service
+    restart: always
+    ports:
+      - 8082:5000
+    environment:
+      - MONGOCONNECTION__CONNECTIONSTRING=mongodb://j140:PASSWORD@mongodb.mikr.dev:27017/?authSource=db_j140&readPreference=primary&ssl=false
+      - MONGOCONNECTION__DATABASENAME=db_j140
+      - APIKEY=1234
+    networks:
+      - ctsNetworkPrd
+
   cts-frontend:
     image: hevgan/cts-dash-application:latest
     container_name: cts-frontend

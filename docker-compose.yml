@@ -14,6 +14,18 @@ services:
     networks:
       - ctsNetwork
 
+  cts-compute-service:
+    image: brzzw5k/city-traffic-simulator-computing-microservice:latest
+    container_name: cts-compute-service
+    restart: always
+    ports:
+      - 8082:5000
+    environment:
+      - MONGOCONNECTION__CONNECTIONSTRING=mongodb://root:root@mongodb:27017
+      - MONGOCONNECTION__DATABASENAME=test
+    networks:
+      - ctsNetwork
+
   cts-backend:
     image: matejuk/city-traffic-simulator-backend:latest
     container_name: cts-backend
@@ -24,6 +36,7 @@ services:
       - MONGOCONNECTION__CONNECTIONSTRING=mongodb://root:root@mongodb:27017
       - MONGOCONNECTION__DATABASENAME=test
       - APIKEY=1234
+      - COMPUTE_SERVICE_URL=http://cts-compute-service
     networks:
       - ctsNetwork
 
